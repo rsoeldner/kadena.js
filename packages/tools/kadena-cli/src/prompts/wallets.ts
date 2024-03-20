@@ -24,7 +24,7 @@ async function walletSelectionPrompt(
   if (existingKeys.length === 0 && !specialOptions.includes('none')) {
     throw new CommandError({
       errors: [
-        'No wallets found. use "kadena wallets add" to add a new wallet.',
+        'No wallets found. use "kadena wallet add" to add a new wallet.',
       ],
     });
   }
