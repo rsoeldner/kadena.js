@@ -209,26 +209,29 @@ kadena network add --network-name="mainnet" --network-id="mainnet01" --network-h
 ```
 
 ---
+
 ```
 kadena network set-default [arguments]
 ```
 
-| **Arguments & Options**               | **Description**                                   | **Required** |
-| ------------------------------------- | ------------------------------------------------- | ------------ |
-| --network                             | Select name of network to set default             |              |
-| --network-default-confirmation        | Confirmation for default network to set/unset     |              |
+| **Arguments & Options**        | **Description**                               | **Required** |
+| ------------------------------ | --------------------------------------------- | ------------ |
+| --network                      | Select name of network to set default         |              |
+| --network-default-confirmation | Confirmation for default network to set/unset |              |
 
 example for setting default network:
+
 ```
 kadena network set-default --network="testnet" --network-default-confirmation
 ```
+
 example for removing default network:
+
 ```
 kadena network set-default --network="none" --network-default-confirmation
 ```
 
-Passing a network as "none" will remove the default network
----
+## Passing a network as "none" will remove the default network
 
 ```
 kadena network delete [arguments]
@@ -496,8 +499,8 @@ Tool to manage / fund accounts of fungibles (e.g. coin')
 | create          | create an account in mainnet on chain(nr) for token |                   |
 | details         | Get details of an account                           |                   |
 | fund            | Fund a existing/new account                         |                   |
-| name-to-address | Resolve a .kda name to a k:address (kadena names)    |                   |
-| address-to-name | Resolve a k:address to a .kda name (kadena names)    |                   |
+| name-to-address | Resolve a .kda name to a k:address (kadena names)   |                   |
+| address-to-name | Resolve a k:address to a .kda name (kadena names)   |                   |
 | list            | List available account(s)                           |                   |
 | delete          | Delete existing account(s)                          |                   |
 
@@ -546,10 +549,17 @@ kadena account add-from-wallet --account-alias="myalias" --key-wallet="mywallet.
 ```
 
 ---
-### Creating an account on mainnet
-The kadena account create command allows you to create a new account on the mainnet network. This command is restricted to mainnet use and it doesn't support on other networks.
 
-If you would like to create an account on [testnet](#funding-an-account-on-testnet), please use the `kadena account fund` command.
+### Creating an account on mainnet
+
+The kadena account create command allows you to create a new account on the
+mainnet network. This command is restricted to mainnet use and it doesn't
+support on other networks.
+
+If you would like to create an account on
+[testnet](#funding-an-account-on-testnet), please use the `kadena account fund`
+command.
+
 ```
 kadena account create [arguments]
 ```
@@ -565,11 +575,13 @@ kadena account create [arguments]
 example:
 
 Create an account without specifying a name:
+
 ```
 kadena account create --account-name="" --public-keys="YOUR_PUBLIC_KEY" --predicate="keys-any" --chain-id="0"
 ```
 
 Create an account with a name
+
 ```
 kadena account create --account-name="mainnet_test_account" --public-keys="YOUR_PUBLIC_KEY" --predicate="keys-any" --chain-id="0" --fungible="coin
 ```
@@ -577,17 +589,20 @@ kadena account create --account-name="mainnet_test_account" --public-keys="YOUR_
 ---
 
 ### Getting an account details / balance
-The `kadena account details` command retrieves vital information about a specified account on the Kadena blockchain, such as its balance, guard conditions (public keys, predicate), and the account's name.
+
+The `kadena account details` command retrieves vital information about a
+specified account on the Kadena blockchain, such as its balance, guard
+conditions (public keys, predicate), and the account's name.
 
 ```
 kadena account details [arguments]
 ```
 
-| **Arguments & Options** | **Description**                                     | **Required** |
-| ----------------------- | --------------------------------------------------- | ------------ |
-| --account               | Provide account alias/name to retrieve its details  |              |
-| --network               | Name of the network to be used                      |              |
-| --chain-id              | Provide the chain ID associated with the account    |              |
+| **Arguments & Options** | **Description**                                    | **Required** |
+| ----------------------- | -------------------------------------------------- | ------------ |
+| --account               | Provide account alias/name to retrieve its details |              |
+| --network               | Name of the network to be used                     |              |
+| --chain-id              | Provide the chain ID associated with the account   |              |
 
 example using account alias:
 
@@ -602,8 +617,13 @@ kadena account details --account="k:PUBLIC_KEY" --network="mainnet" --chain-id="
 ```
 
 ---
+
 ### Funding an account on testnet
-The kadena account fund command is tailored for the **testnet** network. It allows you to fund an account with a specific amount of a fungible asset. If the account does not exist, it will be automatically _created_ and funded. Note that this command is not applicable to the mainnet network.
+
+The kadena account fund command is tailored for the **testnet** network. It
+allows you to fund an account with a specific amount of a fungible asset. If the
+account does not exist, it will be automatically _created_ and funded. Note that
+this command is not applicable to the mainnet network.
 
 ```
 kadena account fund [arguments]
@@ -722,27 +742,121 @@ Tool for creating and managing transactions
 kadena tx add [arguments]
 ```
 
-| **Arguments & Options** | **Description**                                | **Required** |
-| ----------------------- | ---------------------------------------------- | ------------ |
-| --template              | Select template path                           |              |
-| --template-data         | Provide File path of data to use for template  |              |
-| --network-id            | Provide the network id                         |              |
-| --out-file              | Provide path to save output                    |              |
-| --xx                    | Args are created onl the fly based on template |              |
+`kadena tx add` is a powerful command that leverages transaction templates to
+facilitate the quick and efficient creation of transactions across multiple
+chains and access patterns. This feature is designed to work with user-supplied
+values, filling out predefined templates to generate transactions ready for
+signing and submission.
 
-example:
+### Available Templates
+
+Currently, two default templates are provided: `transfer` and `safe-transfer`.
+These templates cover the most common transaction types, allowing for
+straightforward transfers of tokens between accounts.
+
+### Command Usage
+
+```plaintext
+kadena tx add [options] [arguments]
+```
+
+This command accepts various arguments and options, allowing for detailed
+customization of the transaction being created. Below is a breakdown of the
+options available:
+
+| **Arguments & Options** | **Description**                                           | Required |
+| ----------------------- | --------------------------------------------------------- | -------- |
+| `--template`            | Path to the transaction template file.                    | Yes      |
+| `--template-data`       | File path for the data used to fill the template.         | No       |
+| `--network-id`          | Specifies the network ID (e.g., `testnet04`).             | Yes      |
+| `--out-file`            | Path for saving the generated transaction file.           | No       |
+| `--holes`               | Displays a list of required template variables.           | No       |
+| Custom options          | Generated based on the chosen template's required fields. | Varies   |
+
+### Example Command
 
 ```
-kadena tx add --template="transfer.yaml" --template-data="path" (--account-from="k:account" --account-to="k:toaccount" --amount="1" --chain-id="1" --pk-from="publicKey") --network-id="testnet04" --out-file="transaction-(request-key).json"
+kadena tx add --template="transfer.yaml" --template-data="data.yaml" (--account-from="k:account" --account-to="k:toaccount" --amount="1" --chain-id="1" --pk-from="publicKey") --network-id="testnet04" --out-file="transaction.json"
 ```
 
-Template variables are prompted unless assigned via --template-data or direct
-flags. Variables can be prefixed to enable value selection using:
+In this example, `transfer.yaml` is the template used to construct the
+transaction. `data.yaml` contains the user-supplied values for the template
+variables. The `--network-id` specifies which network the transaction is
+intended for, and `--out-file` determines where the generated transaction file
+will be saved.
 
-- `account:` to select a account name
-- `key:` to select a public key
-- `network:` to select existing networkId
-- `decimal:` to enable decimal input validation
+### Template Variables
+
+Variables are a critical part of transaction templates, defining the data
+required to construct a transaction. Users can be prompted for variables missing
+from the `--template-data` file or not provided as command-line arguments. The
+`--holes` option is particularly useful for identifying all the variables a
+template requires.
+
+Variables support specific prefixes (`account:`, `key:`, `network:`, `decimal:`)
+to facilitate the correct selection or validation of input values in interactive
+mode.
+
+`account`: This prefix is used for variables that should be filled with an
+account name, guiding users to input valid Kadena account identifiers. `key`:
+Variables with this prefix expect a public key, ensuring that users provide
+cryptographic keys in the correct format. `network`: This prefix is used for
+specifying the network ID, helping users to select the appropriate network for
+their transaction. `decimal`: For variables that involve numerical values with
+decimal points, this prefix ensures the format and precision of the input.
+
+Below is a YAML template that outlines the structure for a coin transfer
+operation on Kadena. Notice the use of placeholders with prefixes to define
+expected data types for each field:
+
+```yaml
+code: |-
+  (coin.transfer "{{{account:from}}}" "{{{account:to}}}" {{decimal:amount}}))
+  (coin.transfer "{{{account:to}}}" "{{{account:from}}}" 0.000000000001)
+data:
+meta:
+  chainId: '{{chain-id}}'
+  sender: { { { account:from } } }
+  gasLimit: 2000
+  gasPrice: 0.00000001
+  ttl: 7200
+signers:
+  - public: { { key:from } }
+    caps:
+      - name: 'coin.TRANSFER'
+        args:
+          [
+            { { { account:from } } },
+            { { { account:to } } },
+            { { decimal:amount } },
+          ]
+      - name: 'coin.GAS'
+        args: []
+  - public: { { key:to } }
+    caps:
+      - name: 'coin.TRANSFER'
+        args: [{ { { account:to } } }, { { { account:from } } }, 0.000000000001]
+networkId: '{{network:networkId}}'
+type: exec
+```
+
+This template exemplifies how prefixes guide users in providing the correct
+types of input values, significantly reducing the potential for errors when the
+CLI is operated in its interactive mode. In this mode, the prefixes play a
+crucial role in prompting users for the specific type of information required,
+ensuring the accuracy and validity of the transaction data. This interactive
+guidance simplifies the transaction creation process, enhancing the security and
+reliability of the transactions constructed.
+
+In contrast, when operating in non-interactive mode, the system relies on
+arguments passed directly via the command line. In this scenario, the values for
+the transaction are provided as arguments, and the prefixes are ignored. This
+means that the responsibility for ensuring the correctness and appropriateness
+of the input values shifts entirely to the user. It's crucial for users to be
+mindful of the data types and formats expected by the template to avoid errors.
+This method allows for a more streamlined and automated approach to transaction
+creation, suitable for users who prefer script-based automation or who are
+running the CLI in environments where interactive prompts are not feasible.
 
 ---
 
