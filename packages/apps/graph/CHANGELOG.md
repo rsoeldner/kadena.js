@@ -1,5 +1,25 @@
 # @kadena/graph
 
+## 0.1.12
+
+### Patch Changes
+
+- 89412c156: Fixed gas limit estimations returning 2500 on failed transactions
+- 2a7d0978e: Removed the account by public key queries
+- 3373d6397: Removed single transfer and event queries due to ineffective
+  primary key usage
+- 0e5cceacc: Made fungible name non-required for fungible account queries;
+  created default value
+- 96c7b9834: Improved Schema documentation for events and gas limit estimations.
+  And made it easier to query for a transaction.
+- 6514f74a5: Fix transaction on events object; regenerate schema
+- 7d1dbdd25: Improved functional documentation, added some query examples
+- 3b2e0fe7c: Added input validation to queries and subscriptions
+- fc1308be8: Removed duplicate queries
+- ffb089144: Restore nested querying
+- b7c5ca578: Refactored transactions to include mempool data; refactored all
+  objects with relation to transactions
+
 ## 0.1.11
 
 ### Patch Changes
